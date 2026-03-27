@@ -1,0 +1,652 @@
+-- ****************************************
+-- CSE Motors Database
+-- Complete setup file
+-- Run this entire file in pgAdmin Query Tool
+-- ****************************************
+-- =========================================
+-- DROP EXISTING TABLES (clean start)
+-- =========================================
+DROP TABLE IF EXISTS public.inventory;
+DROP TABLE IF EXISTS public.classification;
+DROP TABLE IF EXISTS public.account;
+-- =========================================
+-- CREATE CLASSIFICATION TABLE
+-- =========================================
+CREATE TABLE public.classification (
+    classification_id SERIAL PRIMARY KEY,
+    classification_name CHARACTER VARYING NOT NULL
+);
+-- =========================================
+-- CREATE INVENTORY TABLE
+-- =========================================
+CREATE TABLE public.inventory (
+    inv_id SERIAL PRIMARY KEY,
+    inv_make CHARACTER VARYING(50) NOT NULL,
+    inv_model CHARACTER VARYING(50) NOT NULL,
+    inv_year CHARACTER(4) NOT NULL,
+    inv_description TEXT NOT NULL,
+    inv_image CHARACTER VARYING(200) NOT NULL,
+    inv_thumbnail CHARACTER VARYING(200) NOT NULL,
+    inv_price NUMERIC(9, 2) NOT NULL,
+    inv_miles INTEGER NOT NULL,
+    inv_color CHARACTER VARYING(50) NOT NULL,
+    classification_id INTEGER NOT NULL REFERENCES public.classification(classification_id)
+);
+-- =========================================
+-- CREATE ACCOUNT TABLE
+-- =========================================
+CREATE TABLE public.account (
+    account_id SERIAL PRIMARY KEY,
+    account_firstname CHARACTER VARYING(50) NOT NULL,
+    account_lastname CHARACTER VARYING(50) NOT NULL,
+    account_email CHARACTER VARYING(100) NOT NULL,
+    account_password CHARACTER VARYING(200) NOT NULL,
+    account_type CHARACTER VARYING(50) NOT NULL DEFAULT 'Client'
+);
+-- =========================================
+-- INSERT CLASSIFICATION DATA
+-- =========================================
+INSERT INTO public.classification (classification_name)
+VALUES ('Custom'),
+    ('Sport'),
+    ('SUV'),
+    ('Truck'),
+    ('Sedan');
+-- =========================================
+-- INSERT INVENTORY DATA
+-- =========================================
+-- CUSTOM VEHICLES (classification_id = 1)
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Batmobile',
+        'Custom',
+        '2021',
+        'This is the Batmobile, the iconic vehicle of the Dark Knight. It is equipped with a jet engine, retractable side fins, and a powerful turbine for quick getaways. A one-of-a-kind vehicle that is sure to turn heads.',
+        '/images/vehicles/full/batmobile.jpg',
+        '/images/vehicles/tn/batmobile.jpg',
+        76000.00,
+        4000,
+        'Black',
+        1
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Cleaning',
+        'Wagon',
+        '2021',
+        'A custom-built cleaning wagon, perfect for the tidy enthusiast. Equipped with all the tools you need to keep your property spotless. Features a built-in power washer, vacuum, and storage for all your cleaning supplies.',
+        '/images/vehicles/full/cleaning-wagon.jpg',
+        '/images/vehicles/tn/cleaning-wagon.jpg',
+        5000.00,
+        1,
+        'White',
+        1
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'DeLorean',
+        'DMC',
+        '1981',
+        'The DeLorean DMC-12 is a sports car manufactured by John DeLorean''s DeLorean Motor Company. The car features gull-wing doors and a stainless-steel body. This is the car that was used in the Back to the Future movies.',
+        '/images/vehicles/full/delorean.jpg',
+        '/images/vehicles/tn/delorean.jpg',
+        45000.00,
+        33000,
+        'Silver',
+        1
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Mechanic',
+        'Special',
+        '2019',
+        'A custom-built mechanic special. This vehicle has been modified for the serious mechanic. It features a built-in tool chest, a hydraulic lift, and a compressor. It is the perfect vehicle for the mechanic on the go.',
+        '/images/vehicles/full/mechanic-special.jpg',
+        '/images/vehicles/tn/mechanic-special.jpg',
+        15000.00,
+        108000,
+        'Red',
+        1
+    );
+-- SPORT VEHICLES (classification_id = 2)
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Lamborghini',
+        'Adventador',
+        '2021',
+        'The Lamborghini Aventador is a mid-engine sports car produced by the Italian automotive manufacturer Lamborghini. The naturally aspirated 6.5 L 60-degree V12 engine produces 700 PS. This vehicle is fast and furious.',
+        '/images/vehicles/full/adventador.jpg',
+        '/images/vehicles/tn/adventador.jpg',
+        417425.00,
+        0,
+        'Metallic Orange',
+        2
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Chevy',
+        'Camaro',
+        '2018',
+        'The Chevrolet Camaro is an American automobile manufactured by General Motors under the Chevrolet brand, classified as a pony car and some versions also as a muscle car. This 2018 model is a real head-turner.',
+        '/images/vehicles/full/camaro.jpg',
+        '/images/vehicles/tn/camaro.jpg',
+        25000.00,
+        1221,
+        'Black',
+        2
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Ford',
+        'Mustang',
+        '2019',
+        'The Ford Mustang is an American muscle car manufactured by Ford. It has long been one of the most popular sports cars in the United States. This 2019 model features the powerful 5.0L V8 engine.',
+        '/images/vehicles/full/mustang.jpg',
+        '/images/vehicles/tn/mustang.jpg',
+        34000.00,
+        15000,
+        'Red',
+        2
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Porsche',
+        'Cayenne',
+        '2021',
+        'The Porsche Cayenne is a mid-size luxury crossover SUV produced by Porsche. The current generation of the Cayenne is built on the Volkswagen Group MLB platform. This is a high-performance luxury vehicle.',
+        '/images/vehicles/full/cayenne.jpg',
+        '/images/vehicles/tn/cayenne.jpg',
+        89000.00,
+        1200,
+        'White',
+        2
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Dodge',
+        'Charger',
+        '2020',
+        'The Dodge Charger is a model of automobile marketed by Dodge. The current Dodge Charger is a four-door large sedan. This 2020 model is powered by a 5.7L HEMI V8 engine with 370 horsepower.',
+        '/images/vehicles/full/charger.jpg',
+        '/images/vehicles/tn/charger.jpg',
+        38000.00,
+        8900,
+        'Grey',
+        2
+    );
+-- SUV VEHICLES (classification_id = 3)
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Audi',
+        'Q7',
+        '2021',
+        'This immaculate 2021 Audi Q7 Premium Plus has been meticulously maintained and comes with Audi full warranty transferable to the new owner. Loaded with premium features including panoramic sunroof, Bang and Olufsen sound system, and adaptive cruise control. Carfax certified one-owner vehicle.',
+        '/images/vehicles/full/audi-q7.jpg',
+        '/images/vehicles/tn/audi-q7.jpg',
+        49500.00,
+        24500,
+        'Glacier White',
+        3
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Ford',
+        'Explorer',
+        '2019',
+        'The Ford Explorer is a range of SUVs manufactured by Ford Motor Company. This 2019 Explorer features a powerful 2.3L EcoBoost engine, third-row seating, and Ford Co-Pilot360 safety suite. Perfect for family adventures.',
+        '/images/vehicles/full/ford-explorer.jpg',
+        '/images/vehicles/tn/ford-explorer.jpg',
+        31000.00,
+        42000,
+        'Burgundy',
+        3
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Chevy',
+        'Tahoe',
+        '2020',
+        'The Chevrolet Tahoe is a full-size SUV from General Motors. This 2020 model features a 5.3L V8 engine, three-row seating, and a spacious cargo area. Great for towing and family road trips.',
+        '/images/vehicles/full/chevy-tahoe.jpg',
+        '/images/vehicles/tn/chevy-tahoe.jpg',
+        38750.00,
+        31000,
+        'Forest Green',
+        3
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Toyota',
+        'RAV4',
+        '2018',
+        'The Toyota RAV4 is a compact crossover SUV produced by Toyota. This 2018 model is equipped with Toyota Safety Sense, a 2.5L four-cylinder engine, and all-wheel drive. Known for its reliability and fuel efficiency.',
+        '/images/vehicles/full/toyota-rav4.jpg',
+        '/images/vehicles/tn/toyota-rav4.jpg',
+        24900.00,
+        58000,
+        'Olive',
+        3
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'BMW',
+        'X5',
+        '2022',
+        'The BMW X5 is a mid-size luxury SUV produced by BMW. This 2022 model features a twin-turbocharged 3.0L inline-six engine producing 335 horsepower, xDrive all-wheel drive, and a stunning panoramic moonroof.',
+        '/images/vehicles/full/bmw-x5.jpg',
+        '/images/vehicles/tn/bmw-x5.jpg',
+        62000.00,
+        9800,
+        'Mineral White',
+        3
+    );
+-- TRUCK VEHICLES (classification_id = 4)
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Ford',
+        'F-150',
+        '2020',
+        'The Ford F-150 is the best-selling vehicle in the United States. This 2020 model features a 3.5L EcoBoost V6 engine, Pro Trailer Backup Assist, and a maximum tow rating of 13,200 lbs. Built tough for any job.',
+        '/images/vehicles/full/ford-f150.jpg',
+        '/images/vehicles/tn/ford-f150.jpg',
+        42000.00,
+        28000,
+        'Oxford White',
+        4
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Chevy',
+        'Silverado',
+        '2021',
+        'The Chevrolet Silverado is a full-size pickup truck from General Motors. This 2021 model has a 6.2L V8 engine producing 420 horsepower, a MultiPro tailgate, and a maximum payload of 2,280 lbs.',
+        '/images/vehicles/full/silverado.jpg',
+        '/images/vehicles/tn/silverado.jpg',
+        46500.00,
+        15000,
+        'Satin Steel Grey',
+        4
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Ram',
+        '1500',
+        '2019',
+        'The Ram 1500 is a full-size pickup truck produced by Ram Trucks. This 2019 model features a 5.7L HEMI V8 engine, an eTorque mild hybrid system, and the RamBox cargo management system. Comfortable and capable.',
+        '/images/vehicles/full/ram-1500.jpg',
+        '/images/vehicles/tn/ram-1500.jpg',
+        38900.00,
+        34000,
+        'Granite Crystal',
+        4
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Toyota',
+        'Tacoma',
+        '2021',
+        'The Toyota Tacoma is a pickup truck manufactured by Toyota. This 2021 model features a 3.5L V6 engine, Toyota Safety Sense 2.0, and legendary off-road capability with the TRD Off-Road package.',
+        '/images/vehicles/full/tacoma.jpg',
+        '/images/vehicles/tn/tacoma.jpg',
+        36000.00,
+        12000,
+        'Army Green',
+        4
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'GMC',
+        'Sierra',
+        '2020',
+        'The GMC Sierra is a full-size pickup truck produced by GMC. This 2020 model is equipped with a 6.2L V8 engine, the innovative CarbonPro carbon fiber bed, and a MultiPro tailgate with six different configurations.',
+        '/images/vehicles/full/gmc-sierra.jpg',
+        '/images/vehicles/tn/gmc-sierra.jpg',
+        48000.00,
+        22000,
+        'Onyx Black',
+        4
+    );
+-- SEDAN VEHICLES (classification_id = 5)
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Audi',
+        'A6',
+        '2020',
+        'The Audi A6 is a mid-size executive car produced by Audi. This 2020 model features a 3.0L turbocharged V6 engine producing 335 horsepower, quattro all-wheel drive, and a stunning virtual cockpit display.',
+        '/images/vehicles/full/audi-a6.jpg',
+        '/images/vehicles/tn/audi-a6.jpg',
+        52000.00,
+        18000,
+        'Florett Silver',
+        5
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'BMW',
+        '440i',
+        '2021',
+        'The BMW 4 Series is a range of compact executive cars produced by BMW. This 2021 440i features a 3.0L turbocharged inline-six engine producing 382 horsepower, xDrive all-wheel drive, and the latest iDrive 7.0 infotainment.',
+        '/images/vehicles/full/bmw-440i.jpg',
+        '/images/vehicles/tn/bmw-440i.jpg',
+        59000.00,
+        6000,
+        'Brooklyn Grey',
+        5
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Chevy',
+        'Malibu',
+        '2019',
+        'The Chevrolet Malibu is a mid-size car manufactured by General Motors. This 2019 model features a 1.5L turbocharged four-cylinder engine, Apple CarPlay and Android Auto, and Teen Driver technology.',
+        '/images/vehicles/full/malibu.jpg',
+        '/images/vehicles/tn/malibu.jpg',
+        19500.00,
+        45000,
+        'Mosaic Black',
+        5
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Honda',
+        'Accord',
+        '2021',
+        'The Honda Accord is a series of cars manufactured by Honda. This 2021 model features a 1.5L turbocharged four-cylinder engine, Honda Sensing safety suite, and a spacious and refined interior with wireless Apple CarPlay.',
+        '/images/vehicles/full/accord.jpg',
+        '/images/vehicles/tn/accord.jpg',
+        28500.00,
+        14000,
+        'Sonic Grey Pearl',
+        5
+    );
+INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+VALUES (
+        'Toyota',
+        'Camry',
+        '2020',
+        'The Toyota Camry is a series of automobiles manufactured by Toyota. This 2020 model features a 2.5L four-cylinder engine, Toyota Safety Sense 2.0, and an 8-inch touchscreen with Apple CarPlay and Android Auto.',
+        '/images/vehicles/full/camry.jpg',
+        '/images/vehicles/tn/camry.jpg',
+        26000.00,
+        32000,
+        'Midnight Black',
+        5
+    );
+-- =========================================
+-- VERIFY DATA WAS INSERTED CORRECTLY
+-- =========================================
+SELECT i.inv_id,
+    i.inv_year,
+    i.inv_make,
+    i.inv_model,
+    i.inv_price,
+    i.inv_miles,
+    c.classification_name
+FROM public.inventory i
+    JOIN public.classification c ON i.classification_id = c.classification_id
+ORDER BY c.classification_name,
+    i.inv_make;
