@@ -1,91 +1,43 @@
-/* ===================================================
-   server.js — Application Entry Point
-   CSE 340 Assignment 4
-   =================================================== */
-require("dotenv").config();
+require("dotenv").config()
+const express = require("express")
+const expressLayouts = require("express-ejs-layouts")
+const app = express()
+const staticRoutes = require("./routes/index")
+const inventoryRoute = require("./routes/inventoryRoute")
+const utilities = require("./utilities/")
 
-const express = require("express");
-const expressLayouts = require("express-ejs-layouts");
-const session = require("express-session");
-const flash = require("connect-flash");
-const expressMessages = require("express-messages");
-const path = require("path");
+const port = process.env.PORT || 5500
+const host = process.env.HOST || "localhost"
 
-const utilities = require("./utilities");
-const baseRouter = require("./routes/base");
-const inventoryRouter = require("./routes/inventoryRoute");
-const accountRouter = require("./routes/accountRoute");
+app.set("view engine", "ejs")
+app.use(expressLayouts)
+app.set("layout", "./layouts/layout")
 
-const app = express();
+app.use(express.static("public"))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-/* ── View Engine ────────────────────────────────── */
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(expressLayouts);
-app.set("layout", "./layouts/layout");
+app.use("/", staticRoutes)
+app.use("/inv", inventoryRoute)
 
-/* ── Static Files ───────────────────────────────── */
-app.use(express.static(path.join(__dirname, "public")));
-
-/* ── Body Parsers ───────────────────────────────── */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-/* ── Session & Flash ────────────────────────────── */
-app.use(
-  session({
-    store: new (require("express-session").MemoryStore)(),
-    secret: process.env.SESSION_SECRET || "supersecret",
-    resave: true,
-    saveUninitialized: true,
-    name: "sessionId",
-  })
-);
-app.use(flash());
-app.use(function (req, res, next) {
-  res.locals.messages = expressMessages(req, res);
-  next();
-});
-
-/* ── Nav Builder Middleware ─────────────────────── */
 app.use(async (req, res, next) => {
-  try {
-    res.locals.nav = await utilities.getNav();
-  } catch (err) {
-    next(err);
-  }
-  next();
-});
+  next({ status: 404, message: "Sorry, we appear to have lost that page." })
+})
 
-/* ── Routes ─────────────────────────────────────── */
-app.use("/", baseRouter);
-app.use("/inv", inventoryRouter);
-app.use("/account", accountRouter);
-
-/* ── 404 Handler ────────────────────────────────── */
-app.use(async (req, res, next) => {
-  next({ status: 404, message: "Sorry, we appear to have lost that page." });
-});
-
-/* ── Error Handler ──────────────────────────────── */
 app.use(async (err, req, res, next) => {
-  let nav = res.locals.nav || await utilities.getNav().catch(() => "");
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
-  const status = err.status || 500;
+  let nav = await utilities.getNav()
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   const message =
-    status === 404
+    err.status == 404
       ? err.message
-      : "Oh no! There was a crash. Maybe try a different route?";
-  res.status(status).render("errors/error", {
-    title: status + " Error",
+      : "Oh no! There was a crash. Maybe try a different route?"
+  res.render("errors/error", {
+    title: err.status || "Server Error",
     nav,
     message,
-  });
-});
+  })
+})
 
-/* ── Start Server ───────────────────────────────── */
-const PORT = process.env.PORT || 5500;
-const HOST = process.env.HOST || "localhost";
-app.listen(PORT, () => {
-  console.log(`🚀  App running → http://${HOST}:${PORT}`);
-});
+app.listen(port, () => {
+  console.log(`App listening on ${host}:${port}`)
+})
