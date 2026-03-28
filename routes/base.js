@@ -4,10 +4,6 @@ const baseController = require("../controllers/baseController")
 const utilities = require("../utilities/")
 
 router.get("/", utilities.handleErrors(baseController.buildHome))
-
-router.get(
-    "/error",
-    utilities.handleErrors(baseController.triggerError)
-)
+router.get("/error", utilities.handleErrors(baseController.triggerError))
 
 module.exports = router
