@@ -1,22 +1,20 @@
-/* ===================================================
-   controllers/baseController.js
-   =================================================== */
-const utilities = require("../utilities");
 
-const baseCont = {};
+const utilities = require("../utilities/")
+const baseController = {}
 
-baseCont.buildHome = async function (req, res, next) {
-  const nav = await utilities.getNav();
+baseController.buildHome = async function (req, res, next) {
+  const nav = await utilities.getNav()
   res.render("index", {
     title: "Home",
     nav,
-    errors: null,
-  });
-};
+  })
+}
 
-// Trigger intentional 500 error (for testing error handler)
-baseCont.buildError = async function (req, res, next) {
-  throw new Error("Intentional 500 Error Triggered");
-};
+baseController.triggerError = async function (req, res, next) {
+  throw new Error(
+    "Intentional Server Error — This was triggered from the footer link."
+  )
+}
 
-module.exports = baseCont;
+module.exports = baseController
+```
