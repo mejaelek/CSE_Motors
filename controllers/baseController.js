@@ -1,14 +1,19 @@
-const express = require("express")
-const router = new express.Router()
-const baseController = require("../controllers/baseController")
 const utilities = require("../utilities/")
+const baseController = {}
 
-router.get("/", utilities.handleErrors(baseController.buildHome))
+baseController.buildHome = async function (req, res, next) {
+  const nav = await utilities.getNav()
+  res.render("index", {
+    title: "Home",
+    nav,
+  })
+}
 
-router.get(
-  "/error",
-  utilities.handleErrors(baseController.triggerError)
-)
+baseController.triggerError = async function (req, res, next) {
+  throw new Error(
+    "Intentional Server Error - This was triggered from the footer link."
+  )
+}
 
-module.exports = router
+module.exports = baseController
 ```
