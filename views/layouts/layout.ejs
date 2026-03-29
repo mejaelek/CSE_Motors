@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CSE Motors - Quality Pre-Owned Vehicles" />
+  <title><%= title %> | CSE Motors</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header id="top-header">
+    <a href="/" id="site-name" title="Return to home page">CSE Motors</a>
+    <div id="tools">
+      <a href="/account/login" title="Click to log in">My Account</a>
+    </div>
+  </header>
+
+  <nav id="main-nav">
+    <%- nav %>
+  </nav>
+
+  <main id="main-content">
+    <%- body %>
+  </main>
+
+  <footer id="site-footer">
+    <p>
+      &copy; 2024 CSE Motors
+      &bull; All rights reserved
+      &bull;
+      <a href="/error" id="error-trigger-link" title="Trigger a 500 server error">
+        Trigger Server Error
+      </a>
+    </p>
+  </footer>
+
+</body>
+</html>
